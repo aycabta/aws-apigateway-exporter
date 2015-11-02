@@ -29,7 +29,13 @@ utilities.promisify((params, callback) => {
             var path = {};
             paths[item.path] = {};
             Object.keys(item.resourceMethods).forEach(method => {
-                paths[item.path][method.toLowerCase()] = {};
+                paths[item.path][method.toLowerCase()] = {
+                    responses: {
+                        200: {
+                            description: ''
+                        }
+                    }
+                };
             });
         }
     });
