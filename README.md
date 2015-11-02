@@ -1,5 +1,5 @@
-API Gateway to Swagger JSON
-===========================
+AWS API Gateway Exporter
+========================
 
 ## Usage
 
