@@ -16,6 +16,25 @@ utilities.promisify((params, callback) => {
     })({ restApiId: result.items[0].id });
 })
 .then(result => {
+    var toSwagger = {
+        swagger: "2.0",
+        info: {
+            version: "1.0.0",
+            title: result.name
+        }
+    }
+    var paths = {};
+    result.items.forEach(item => {
+        var path = {};
+        paths[item.path] = {};
+        if (item.resourceMethods) {
+            Object.keys(item.resourceMethods).forEach(method => {
+                paths[item.path][method.toLowerCase()] = {};
+            });
+        }
+    });
+    toSwagger.paths = paths;
+    console.log(JSON.stringify(toSwagger, '', '    '));
 })
 .catch(err => {
     console.log('error!!!');
