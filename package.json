@@ -4,8 +4,12 @@
   "main": "index.js",
   "bin": "index.js",
   "license": "MIT",
+  "scripts": {
+    "preinstall": "npm i -g babel-cli"
+  },
   "dependencies": {
     "aws-sdk": "^2.1.44",
     "babel": "^5.8.20"
   }
 }
+
