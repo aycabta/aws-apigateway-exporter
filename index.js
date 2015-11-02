@@ -25,9 +25,9 @@ utilities.promisify((params, callback) => {
     }
     var paths = {};
     result.items.forEach(item => {
-        var path = {};
-        paths[item.path] = {};
         if (item.resourceMethods) {
+            var path = {};
+            paths[item.path] = {};
             Object.keys(item.resourceMethods).forEach(method => {
                 paths[item.path][method.toLowerCase()] = {};
             });
