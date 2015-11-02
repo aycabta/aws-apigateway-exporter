@@ -8,8 +8,6 @@ utilities.promisify((params, callback) => {
     apigateway.getRestApis(params, callback);
 })({})
 .then(result => {
-    console.log('======== getRestApis()');
-    console.log(result);
     return Promise.all([
         utilities.promisify((params, callback) => {
             apigateway.getStages(params, callback);
@@ -20,10 +18,6 @@ utilities.promisify((params, callback) => {
     ]);
 })
 .then(result => {
-    console.log('======== getStages()');
-    console.log(result[0]);
-    console.log('======== getResources()');
-    console.log(result[1]);
 })
 .catch(err => {
     console.log('error!!!');
