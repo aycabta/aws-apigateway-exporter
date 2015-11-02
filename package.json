@@ -1,0 +1,11 @@
+{
+  "name": "apigatewaytest",
+  "version": "0.0.1",
+  "main": "index.js",
+  "bin": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.1.44",
+    "babel": "^5.8.20"
+  }
+}
