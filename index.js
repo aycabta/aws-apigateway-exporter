@@ -17,9 +17,9 @@ utilities.promisify((params, callback) => {
 })
 .then(result => {
     var toSwagger = {
-        swagger: "2.0",
+        swagger: '2.0',
         info: {
-            version: "1.0.0",
+            version: '1.0.0',
             title: result.name
         }
     }
