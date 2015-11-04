@@ -32,7 +32,7 @@ utilities.promisify((params, callback) => {
             title: result.name
         },
         host: `${restApiId}.execute-api.${"us-west-2"}.amazonaws.com`,
-        basePath: stages.item[0].stageName
+        basePath: `/${stages.item[0].stageName}`
     }
     var paths = {};
     resources.items.forEach(item => {
