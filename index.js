@@ -17,19 +17,20 @@ utilities.promisify((params, callback) => {
             apigateway.getResources(params, callback);
         })({ restApiId: restApiId }),
         utilities.promisify((restApiId, callback) => {
-            callback(null, restApiId);
-        })(restApiId)
+            callback(null, result);
+        })(result)
     ]);
 })
 .then(result => {
     var stages = result[0];
     var resources = result[1];
-    var restApiId = result[2];
+    var restApis = result[2];
+    var restApiId = restApis.items[0].id
     var toSwagger = {
         swagger: '2.0',
         info: {
             version: '1.0.0',
-            title: result.name
+            title: restApis.items[0].name
         },
         host: `${restApiId}.execute-api.${"us-west-2"}.amazonaws.com`,
         basePath: `/${stages.item[0].stageName}`
