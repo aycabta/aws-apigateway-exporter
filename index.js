@@ -8,16 +8,17 @@ utilities.promisify((params, callback) => {
     apigateway.getRestApis(params, callback);
 })({})
 .then(result => {
+    var restApiId = result.items[0].id;
     return Promise.all([
         utilities.promisify((params, callback) => {
             apigateway.getStages(params, callback);
-        })({ restApiId: result.items[0].id }),
+        })({ restApiId: restApiId }),
         utilities.promisify((params, callback) => {
             apigateway.getResources(params, callback);
-        })({ restApiId: result.items[0].id }),
+        })({ restApiId: restApiId }),
         utilities.promisify((restApiId, callback) => {
             callback(null, restApiId);
-        })(result.items[0].id)
+        })(restApiId)
     ]);
 })
 .then(result => {
