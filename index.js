@@ -8,14 +8,22 @@ utilities.promisify((params, callback) => {
     apigateway.getRestApis(params, callback);
 })({})
 .then(result => {
-    return utilities.promisify((params, callback) => {
-        apigateway.getResources(params, (err, hopstep) => {
-            hopstep.name = result.items[0].name;
-            callback(err, hopstep);
-        });
-    })({ restApiId: result.items[0].id });
+    return Promise.all([
+        utilities.promisify((params, callback) => {
+            apigateway.getStages(params, callback);
+        })({ restApiId: result.items[0].id }),
+        utilities.promisify((params, callback) => {
+            apigateway.getResources(params, callback);
+        })({ restApiId: result.items[0].id }),
+        utilities.promisify((restApiId, callback) => {
+            callback(null, restApiId);
+        })(result.items[0].id)
+    ]);
 })
 .then(result => {
+    var stages = result[0];
+    var resources = result[1];
+    var restApiId = result[2];
     var toSwagger = {
         swagger: '2.0',
         info: {
@@ -24,7 +32,7 @@ utilities.promisify((params, callback) => {
         }
     }
     var paths = {};
-    result.items.forEach(item => {
+    resources.items.forEach(item => {
         if (item.resourceMethods) {
             var path = {};
             paths[item.path] = {};
