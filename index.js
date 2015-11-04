@@ -1,30 +1,26 @@
-var AWS = require('aws-sdk');
-var utilities = require('./utilities');
+var AWS = require('aws-sdk-promise');
 
 AWS.config.update({ region: 'us-west-2' });
 apigateway = new AWS.APIGateway();
 
+/*
 utilities.promisify((params, callback) => {
     apigateway.getRestApis(params, callback);
 })({})
+*/
+apigateway.getRestApis({}).promise()
 .then(result => {
-    var restApiId = result.items[0].id;
+    var restApiId = result.data.items[0].id;
     return Promise.all([
-        utilities.promisify((params, callback) => {
-            apigateway.getStages(params, callback);
-        })({ restApiId: restApiId }),
-        utilities.promisify((params, callback) => {
-            apigateway.getResources(params, callback);
-        })({ restApiId: restApiId }),
-        utilities.promisify((restApiId, callback) => {
-            callback(null, result);
-        })(result)
+        apigateway.getStages({ restApiId: restApiId }).promise(),
+        apigateway.getResources({ restApiId: restApiId }).promise(),
+        new Promise((accept, reject) => { accept(result); })
     ]);
 })
 .then(result => {
-    var stages = result[0];
-    var resources = result[1];
-    var restApis = result[2];
+    var stages = result[0].data;
+    var resources = result[1].data;
+    var restApis = result[2].data;
     var restApiId = restApis.items[0].id
     var toSwagger = {
         swagger: '2.0',
