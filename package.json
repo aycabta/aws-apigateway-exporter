@@ -10,7 +10,8 @@
   "dependencies": {
     "aws-sdk": "^2.1.44",
     "aws-sdk-promise": "^0.0.2",
-    "babel": "^5.8.20"
+    "babel": "^5.8.20",
+    "aws-sdk-config-loader": "^0.3.1"
   }
 }
 

@@ -1,6 +1,8 @@
 var AWS = require('aws-sdk-promise');
+var loader = require('aws-sdk-config-loader');
 
-AWS.config.update({ region: 'us-west-2' });
+loader(AWS);
+
 apigateway = new AWS.APIGateway();
 
 /*
