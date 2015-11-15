@@ -29,7 +29,8 @@ apigateway.getRestApis({}).promise()
         swagger: '2.0',
         info: {
             version: '1.0.0',
-            title: restApis.items[0].name
+            title: restApis.items[0].name,
+            description: restApis.items[0].description
         },
         host: `${restApiId}.execute-api.${"us-west-2"}.amazonaws.com`,
         basePath: `/${stages.item[0].stageName}`
