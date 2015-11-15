@@ -1,5 +1,6 @@
 var AWS = require('aws-sdk-promise');
 var loader = require('aws-sdk-config-loader');
+var program = require('commander');
 
 loader(AWS);
 
