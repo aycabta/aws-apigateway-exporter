@@ -58,20 +58,14 @@ apigateway.getRestApis({}).promise()
     if (!foundRestApi) {
         restApiNotFound(result.data.items, 'The REST API "' + program.restApi + '" not found');
     }
-    var restApiId = foundRestApi.id;
     return Promise.all([
-        apigateway.getStages({ restApiId: restApiId }).promise(),
-        apigateway.getResources({ restApiId: restApiId }).promise(),
+        apigateway.getStages({ restApiId: foundRestApi.id }).promise(),
         new Promise((accept, reject) => { accept(foundRestApi); })
     ]);
 })
 .then(result => {
     var stages = result[0].data.item;
-    var resources = result[1].data.items;
-    var restApi = result[2];
-    console.log(restApi);
-    console.log(stages);
-    console.log(resources);
+    var restApi = result[1];
     if (!program.stage) {
         stageNotFound(stages, 'Specify --stage option');
     }
@@ -85,6 +79,16 @@ apigateway.getRestApis({}).promise()
     if (!foundStage) {
         stageNotFound(stages, 'The Stage "' + program.stage + '" not found');
     }
+    return Promise.all([
+        new Promise((accept, reject) => { accept(restApi); }),
+        new Promise((accept, reject) => { accept(foundStage); }),
+        apigateway.getResources({ restApiId: restApi.id }).promise()
+    ]);
+})
+.then(result => {
+    var restApi = result[0];
+    var stage = result[1];
+    var resources = result[2].data.items;
     var toSwagger = {
         swagger: '2.0',
         info: {
@@ -93,7 +97,7 @@ apigateway.getRestApis({}).promise()
             description: restApi.description
         },
         host: `${restApi.id}.execute-api.${"us-west-2"}.amazonaws.com`,
-        basePath: `/${foundStage.stageName}`
+        basePath: `/${stage.stageName}`
     }
     var paths = {};
     resources.forEach(item => {
