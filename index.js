@@ -3,6 +3,13 @@ var loader = require('aws-sdk-config-loader');
 var Table = require('cli-table');
 var program = require('commander');
 
+program
+  .version(require('./package.json').version)
+  .usage('[options]')
+  .option('--rest-api <REST API name or ID>', 'The name or ID of the REST API')
+  .option('--stage <stage name or ID>', 'The name or ID of the Stage')
+  .parse(process.argv);
+
 loader(AWS);
 
 apigateway = new AWS.APIGateway();
