@@ -6,11 +6,6 @@ loader(AWS);
 
 apigateway = new AWS.APIGateway();
 
-/*
-utilities.promisify((params, callback) => {
-    apigateway.getRestApis(params, callback);
-})({})
-*/
 apigateway.getRestApis({}).promise()
 .then(result => {
     var restApiId = result.data.items[0].id;
