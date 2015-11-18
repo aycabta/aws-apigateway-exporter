@@ -59,13 +59,13 @@ apigateway.getRestApis({}).promise()
         restApiNotFound(result.data.items, 'The REST API "' + program.restApi + '" not found');
     }
     return Promise.all([
-        apigateway.getStages({ restApiId: foundRestApi.id }).promise(),
-        new Promise((accept, reject) => { accept(foundRestApi); })
+        new Promise((accept, reject) => { accept(foundRestApi); }),
+        apigateway.getStages({ restApiId: foundRestApi.id }).promise()
     ]);
 })
 .then(result => {
-    var stages = result[0].data.item;
-    var restApi = result[1];
+    var restApi = result[0];
+    var stages = result[1].data.item;
     if (!program.stage) {
         stageNotFound(stages, 'Specify --stage option');
     }
