@@ -7,10 +7,16 @@
   "scripts": {
     "preinstall": "npm i -g babel-cli"
   },
+  "devDependencies": {
+    "babel": "^6.1.18",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.0",
+    "gulp-rename": "^1.2.2"
+  },
   "dependencies": {
-    "aws-sdk": "^2.1.44",
+    "aws-sdk": "^2.2.17",
     "aws-sdk-promise": "^0.0.2",
-    "babel": "^5.8.20",
+    "babel": "^6.1.18",
     "aws-sdk-config-loader": "^0.3.1",
     "commander": "^2.9.0",
     "cli-table": "^0.3.1"
