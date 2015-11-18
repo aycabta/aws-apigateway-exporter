@@ -14,32 +14,89 @@ loader(AWS);
 
 apigateway = new AWS.APIGateway();
 
+function restApiNotFound(restApis, message) {
+    var table = new Table();
+    table.push(['name', 'ID']);
+    restApis.forEach((restApi) => {
+        table.push([restApi.name, restApi.id]);
+    });
+    console.log(message);
+    console.log('');
+    console.log('REST APIs:');
+    console.log(table.toString());
+    process.exit(1);
+}
+
+function stageNotFound(stages, message) {
+    var table = new Table();
+    table.push(['name', 'ID']);
+    stages.forEach((stage) => {
+        table.push([stage.stageName, stage.deploymentId]);
+    });
+    console.log(message);
+    console.log('');
+    console.log('Stages:');
+    console.log(table.toString());
+    process.exit(2);
+}
+
 apigateway.getRestApis({}).promise()
 .then(result => {
-    var restApiId = result.data.items[0].id;
+    if (!program.restApi) {
+        restApiNotFound(result.data.items, 'Specify --rest-api option');
+    }
+    return result;
+})
+.then(result => {
+    var foundRestApi = result.data.items.find((restApi) => {
+        if (restApi.name === program.restApi || restApi.id === program.restApi) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    if (!foundRestApi) {
+        restApiNotFound(result.data.items, 'The REST API "' + program.restApi + '" not found');
+    }
+    var restApiId = foundRestApi.id;
     return Promise.all([
         apigateway.getStages({ restApiId: restApiId }).promise(),
         apigateway.getResources({ restApiId: restApiId }).promise(),
-        new Promise((accept, reject) => { accept(result); })
+        new Promise((accept, reject) => { accept(foundRestApi); })
     ]);
 })
 .then(result => {
-    var stages = result[0].data;
-    var resources = result[1].data;
-    var restApis = result[2].data;
-    var restApiId = restApis.items[0].id
+    var stages = result[0].data.item;
+    var resources = result[1].data.items;
+    var restApi = result[2];
+    console.log(restApi);
+    console.log(stages);
+    console.log(resources);
+    if (!program.stage) {
+        stageNotFound(stages, 'Specify --stage option');
+    }
+    var foundStage = stages.find((stage) => {
+        if (stage.stageName === program.stage || stage.deploymentId === program.stage) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    if (!foundStage) {
+        stageNotFound(stages, 'The Stage "' + program.stage + '" not found');
+    }
     var toSwagger = {
         swagger: '2.0',
         info: {
             version: '1.0.0',
-            title: restApis.items[0].name,
-            description: restApis.items[0].description
+            title: restApi.name,
+            description: restApi.description
         },
-        host: `${restApiId}.execute-api.${"us-west-2"}.amazonaws.com`,
-        basePath: `/${stages.item[0].stageName}`
+        host: `${restApi.id}.execute-api.${"us-west-2"}.amazonaws.com`,
+        basePath: `/${foundStage.stageName}`
     }
     var paths = {};
-    resources.items.forEach(item => {
+    resources.forEach(item => {
         if (item.resourceMethods) {
             var path = {};
             paths[item.path] = {};
