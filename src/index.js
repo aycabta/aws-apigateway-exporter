@@ -119,7 +119,5 @@ apigateway.getRestApis({}).promise()
     console.log(JSON.stringify(toSwagger, '', '    '));
 })
 .catch(err => {
-    console.log('error!!!');
-    console.log(err.stack);
     console.log(err);
 });
