@@ -1,12 +1,13 @@
 {
-  "name": "apigatewaytest",
+  "name": "aws-apigateway-exporter",
+  "repository": "aycabta/aws-apigateway-exporter",
   "version": "0.0.1",
-  "main": "index.js",
-  "bin": "index.js",
-  "license": "MIT",
+  "bin": "bin/aws-apigateway-exporter",
   "scripts": {
-    "preinstall": "npm i -g babel-cli"
+    "build": "gulp build",
+    "test": "gulp test"
   },
+  "license": "MIT",
   "devDependencies": {
     "babel": "^6.1.18",
     "babel-preset-es2015": "^6.1.18",
