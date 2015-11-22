@@ -18,6 +18,7 @@
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.0",
     "gulp-rename": "^1.2.2",
+    "gulp-mocha": "^2.2.0",
     "del": "^2.1.0"
   },
   "dependencies": {

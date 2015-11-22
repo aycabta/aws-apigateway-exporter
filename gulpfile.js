@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var babel = require('gulp-babel');
 var rename = require('gulp-rename');
+var mocha = require('gulp-mocha');
+var register = require('babel-register');
 var del = require('del');
 
 gulp.task('build', ['build-bin', 'build-lib']);
@@ -29,3 +31,7 @@ gulp.task('run', ['build'], function() {
     });
 });
 
+gulp.task('test', function () {
+    return gulp.src('test/**/*.js')
+        .pipe(mocha({ compilers: { js: register } }));
+});
