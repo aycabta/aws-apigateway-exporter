@@ -48,5 +48,5 @@ new GetParameters({
     console.log(JSON.stringify(toSwagger, '', '    '));
 })
 .catch(err => {
-    console.log(err);
+    console.log(err.message);
 });
