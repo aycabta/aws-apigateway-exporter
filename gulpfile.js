@@ -6,14 +6,14 @@ var del = require('del');
 gulp.task('build', ['build-bin', 'build-lib']);
 
 gulp.task('build-bin', function() {
-    gulp.src('src/index.js')
+    return gulp.src('src/index.js')
         .pipe(babel())
         .pipe(rename('aws-apigateway-exporter'))
         .pipe(gulp.dest('bin'));
 });
 
 gulp.task('build-lib', function() {
-    gulp.src('src/get_parameters.js')
+    return gulp.src('src/get_parameters.js')
         .pipe(babel())
         .pipe(gulp.dest('lib'));
 });
