@@ -92,7 +92,6 @@ export default class GetParameters {
                     stages: stages,
                     message: 'The Stage "' + this.specifiedStage + '" not found'
                 })));
-                stageNotFound(stages, 'The Stage "' + this.specifiedStage + '" not found');
             }
             return Promise.all([
                 new Promise((accept, reject) => { accept(restApi); }),
