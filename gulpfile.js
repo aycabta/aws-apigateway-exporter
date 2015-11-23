@@ -25,7 +25,8 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('run', ['build'], function() {
-    require('child_process').exec('node bin/aws-apigateway-exporter', function (error, stdout, stderr) {
+    var command = 'node bin/aws-apigateway-exporter ' + process.argv.slice(3).join(' ');
+    require('child_process').exec(command, function (error, stdout, stderr) {
         console.log(stdout);
         console.error(stderr);
     });
