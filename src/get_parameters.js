@@ -75,10 +75,10 @@ export default class GetParameters {
             var restApi = result[0];
             var stages = result[1].data.item;
             if (!this.specifiedStage) {
-                this.stageNotFound({
+                return Promise.reject(new Error(this.stageNotFound({
                     stages: stages,
                     message: 'Specify --stage option'
-                });
+                })));
             }
             var foundStage = stages.find((stage) => {
                 if (stage.stageName === this.specifiedStage || stage.deploymentId === this.specifiedStage) {
