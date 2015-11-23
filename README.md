@@ -1,14 +1,16 @@
-AWS API Gateway Exporter
-========================
-
-*UNDER DEVELOPMENT*
+# AWS API Gateway Exporter
 
 ## Usage
 
-At the start, you need to set up credentials of your home directory what `aws-sdk` reads. Next, run it:
+At the start, you need to set up `~/.aws/credentials` and `~/.aws/config` what `aws-sdk` read:
 
 ```sh
-npm install
-babel-node index.js
+aws configure
+```
+
+Next, run it:
+
+```sh
+npm install -g aws-apigateway-exporter
 ```
 
