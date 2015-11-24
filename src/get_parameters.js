@@ -63,7 +63,7 @@ export default class GetParameters {
                 })));
             }
             return Promise.all([
-                new Promise((accept, reject) => { accept(foundRestApi); }),
+                Promise.resolve(foundRestApi),
                 this.apigateway.getStages({ restApiId: foundRestApi.id }).promise()
             ]);
         });
@@ -94,8 +94,8 @@ export default class GetParameters {
                 })));
             }
             return Promise.all([
-                new Promise((accept, reject) => { accept(restApi); }),
-                new Promise((accept, reject) => { accept(foundStage); }),
+                Promise.resolve(restApi),
+                Promise.resolve(foundStage),
                 this.apigateway.getResources({ restApiId: restApi.id }).promise()
             ]);
         });
