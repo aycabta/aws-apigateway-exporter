@@ -101,7 +101,49 @@ export default class GetParameters {
         });
     }
 
+    getMethodAndIntegration({ resource, restApiId }) {
+        if (resource.resourceMethods) {
+            return Object.keys(resource.resourceMethods).reduce((dummy, method) => {
+                return this.apigateway.getMethod({
+                    httpMethod: method,
+                    resourceId: resource.id,
+                    restApiId: restApiId
+                }).promise()
+                .then(result => {
+                    resource.resourceMethods[method] = result.data;
+                    return resource;
+                });
+            }, null);
+        } else {
+            return Promise.resolve(resource);
+        }
+    }
+
     go() {
-        return this.getStage();
+        return this.getStage()
+        .then(result => {
+            var recordValue = ((results, value) => {
+                results.push(value);
+                return results;
+            }).bind(null, []);
+            var restApi = result[0];
+            var stage = result[1];
+            var resources = result[2].data.items;
+            resources = resources.reduce((promise, resource) => {
+                return promise
+                .then(() => {
+                    return this.getMethodAndIntegration({
+                        resource: resource,
+                        restApiId: restApi.id
+                    })
+                })
+                .then(recordValue);
+            }, Promise.resolve());
+            return Promise.all([
+                Promise.resolve(restApi),
+                Promise.resolve(stage),
+                resources
+            ]);
+        })
     }
 }

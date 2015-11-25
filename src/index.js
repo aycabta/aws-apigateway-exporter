@@ -17,7 +17,7 @@ new GetParameters({
 .then(result => {
     var restApi = result[0];
     var stage = result[1];
-    var resources = result[2].data.items;
+    var resources = result[2];
     var toSwagger = {
         swagger: '2.0',
         info: {
