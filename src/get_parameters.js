@@ -103,17 +103,20 @@ export default class GetParameters {
 
     getMethodAndIntegration({ resource, restApiId }) {
         if (resource.resourceMethods) {
-            return Object.keys(resource.resourceMethods).reduce((dummy, method) => {
-                return this.apigateway.getMethod({
-                    httpMethod: method,
-                    resourceId: resource.id,
-                    restApiId: restApiId
-                }).promise()
+            return Object.keys(resource.resourceMethods).reduce((promise, method) => {
+                return promise
+                .then(() => {
+                    return this.apigateway.getMethod({
+                        httpMethod: method,
+                        resourceId: resource.id,
+                        restApiId: restApiId
+                    }).promise()
+                })
                 .then(result => {
                     resource.resourceMethods[method] = result.data;
                     return resource;
                 });
-            }, null);
+            }, Promise.resolve());
         } else {
             return Promise.resolve(resource);
         }
