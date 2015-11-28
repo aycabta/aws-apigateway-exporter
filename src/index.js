@@ -34,13 +34,13 @@ new GetParameters({
             var path = {};
             paths[item.path] = {};
             Object.keys(item.resourceMethods).forEach(method => {
-                paths[item.path][method.toLowerCase()] = {
-                    responses: {
-                        200: {
-                            description: ''
-                        }
-                    }
-                };
+                var responses = {};
+                Object.keys(item.resourceMethods[method].methodResponses).forEach(statusCode => {
+                    responses[statusCode] = {
+                        description: ''
+                    };
+                });
+                paths[item.path][method.toLowerCase()] = { responses: responses };
             });
         }
     });
