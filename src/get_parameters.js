@@ -125,13 +125,25 @@ export default class GetParameters {
     go() {
         return this.getStage()
         .then(result => {
+            var restApi = result[0];
+            var stage = result[1];
+            var resources = result[2].data.items;
+            return Promise.all([
+                Promise.resolve(restApi),
+                Promise.resolve(stage),
+                Promise.resolve(resources),
+                this.apigateway.getModels({ restApiId: restApi.id }).promise()
+            ]);
+        })
+        .then(result => {
             var recordValue = ((results, value) => {
                 results.push(value);
                 return results;
             }).bind(null, []);
             var restApi = result[0];
             var stage = result[1];
-            var resources = result[2].data.items;
+            var resources = result[2];
+            var models = result[3].data.items;
             resources = resources.reduce((promise, resource) => {
                 return promise
                 .then(() => {
@@ -145,7 +157,8 @@ export default class GetParameters {
             return Promise.all([
                 Promise.resolve(restApi),
                 Promise.resolve(stage),
-                resources
+                resources,
+                Promise.resolve(models)
             ]);
         })
     }

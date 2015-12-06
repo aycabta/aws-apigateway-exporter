@@ -18,6 +18,7 @@ new GetParameters({
     var restApi = result[0];
     var stage = result[1];
     var resources = result[2];
+    var models = result[3];
     var toSwagger = {
         swagger: '2.0',
         info: {
@@ -45,6 +46,11 @@ new GetParameters({
         }
     });
     toSwagger.paths = paths;
+    var definitions = {};
+    models.forEach(item => {
+        definitions[item.name] = JSON.parse(item.schema);
+    });
+    toSwagger.definitions = definitions;
     console.log(JSON.stringify(toSwagger, '', '    '));
 })
 .catch(err => {
