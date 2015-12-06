@@ -1,7 +1,7 @@
 {
   "name": "aws-apigateway-exporter",
   "repository": "aycabta/aws-apigateway-exporter",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "bin": "bin/aws-apigateway-exporter",
   "scripts": {
     "build": "gulp build",
